@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Panini WM 2026 Checkliste</title>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <div class="app">
+
+    <!-- Kopfbereich -->
+    <header class="header">
+      <div class="language-switcher" aria-label="Sprache auswählen">
+        <button class="language-button active" data-language="de" title="Deutsch">
+          <img src="https://flagcdn.com/de.svg" alt="Deutsch">
+        </button>
+
+        <button class="language-button" data-language="en" title="English">
+          <img src="https://flagcdn.com/gb.svg" alt="English">
+        </button>
+
+        <button class="language-button" data-language="es" title="Español">
+          <img src="https://flagcdn.com/es.svg" alt="Español">
+        </button>
+
+        <button class="language-button" data-language="it" title="Italiano">
+          <img src="https://flagcdn.com/it.svg" alt="Italiano">
+        </button>
+
+        <button class="language-button" data-language="fr" title="Français">
+          <img src="https://flagcdn.com/fr.svg" alt="Français">
+        </button>
+      </div>
+
+      <h1 id="appTitle">Panini WM 2026 Checkliste</h1>
+      <p id="appSubtitle">
+        Verwalte deine Sticker, fehlenden Sticker und doppelten Sticker.
+      </p>
+    </header>
+
+    <!-- Zusammenfassung -->
+    <section class="summary">
+      <div class="summary-card">
+        <span id="collectedLabel" class="summary-label">Gesammelt</span>
+        <strong id="collectedCount">0 / 0</strong>
+      </div>
+
+      <div class="summary-card">
+        <span id="progressLabel" class="summary-label">Fortschritt</span>
+        <strong id="progressPercent">0 %</strong>
+      </div>
+
+      <div class="summary-card">
+        <span id="missingLabel" class="summary-label">Fehlend</span>
+        <strong id="missingCount">0</strong>
+      </div>
+
+      <div class="summary-card">
+        <span id="duplicatesLabel" class="summary-label">Doppelte</span>
+        <strong id="duplicateCount">0</strong>
+      </div>
+    </section>
+
+    <!-- Fortschrittsbalken -->
+    <section class="progress-section">
+      <div class="progress-bar">
+        <div id="progressFill" class="progress-fill"></div>
+      </div>
+    </section>
+
+    <!-- Aktionen -->
+    <section class="actions">
+      <button id="saveButton">Speichern</button>
+      <button id="missingPdfButton">PDF fehlende Sticker</button>
+      <button id="duplicatesPdfButton">PDF doppelte Sticker</button>
+      <button id="exportBackupButton">Backup exportieren</button>
+      <button id="importBackupButton">Backup importieren</button>
+      <button id="resetButton">Zurücksetzen</button>
+
+      <input id="importBackupInput" type="file" accept=".json" hidden>
+    </section>
+
+    <!-- Filter und Suche -->
+    <section class="filters">
+      <div class="filter-buttons">
+        <button class="filter-button active" data-filter="all">Alle</button>
+        <button class="filter-button" data-filter="missing">Fehlende</button>
+        <button class="filter-button" data-filter="owned">Habe ich</button>
+        <button class="filter-button" data-filter="duplicates">Doppelte</button>
+      </div>
+
+      <input
+        id="searchInput"
+        class="search-input"
+        type="text"
+        placeholder="Sticker suchen, z. B. MEX 13, Germany, FWC..."
+      >
+    </section>
+
+    <!-- Hier werden die Sticker per JavaScript eingefügt -->
+    <main id="stickerContainer" class="sticker-container"></main>
+
+  </div>
+
+  <!-- Externe Bibliothek für PDF-Erstellung -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+  <!-- Eigene App-Logik -->
+  <script src="script.js"></script>
+</body>
+<p class="footer-note">
+  Flag icons provided by <a href="https://flagpedia.net" target="_blank" rel="noopener">Flagpedia</a>.
+</p>
+</html>
