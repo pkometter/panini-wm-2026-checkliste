@@ -632,29 +632,14 @@ button:hover {
    Responsive Design
    ========================= */
 
-@media (max-width: 900px) {
-  .album-layout {
-    grid-template-columns: 1fr;
-  }
-}
-
-@media (max-width: 800px) {
-  .summary {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .header h1 {
-    font-size: 28px;
-  }
-}
-
 @media (max-width: 500px) {
   .app {
+    width: 100%;
     padding: 14px;
   }
 
   .header {
-    padding: 118px 24px 24px 24px;
+    padding: 112px 20px 24px 20px;
   }
 
   .language-switcher {
@@ -663,90 +648,83 @@ button:hover {
     right: auto;
   }
 
+  .language-button {
+    width: 34px;
+    height: 34px;
+    padding: 3px;
+  }
+
   .header-support-button {
-    top: 68px;
+    top: 66px;
     left: 18px;
     right: auto;
     width: auto;
+    max-width: calc(100% - 36px);
+    padding: 8px 12px;
+    font-size: 12px;
+    line-height: 1.1;
   }
 
-  .summary {
+  .header-support-button::after {
+    left: 0;
+    right: auto;
+    width: min(260px, calc(100vw - 36px));
+  }
+
+  .sticker-container {
+    width: 100%;
+    margin-left: 0;
+    transform: none;
+  }
+
+  .team-card {
+    width: 100%;
+    padding: 14px;
+  }
+
+  .album-team-block {
+    padding: 12px;
+  }
+
+  .album-layout {
     grid-template-columns: 1fr;
-  }
-
-  .actions {
-    flex-direction: column;
-  }
-
-  button {
-    width: 100%;
-  }
-
-  .support-button {
-    width: 100%;
-  }
-
-  .filter-buttons {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-  }
-
-  .filter-button {
-    width: 100%;
-  }
-
-  .album-team-header {
-    align-items: flex-start;
-  }
-
-  .team-code-badge,
-  .special-badge {
-    min-width: 58px;
-    height: 50px;
-    font-size: 18px;
-  }
-
-  .team-info h3 {
-    font-size: 20px;
+    gap: 14px;
   }
 
   .album-page {
+    width: 100%;
     padding: 12px;
   }
 
   .left-sticker-grid {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     grid-template-areas:
-      ".   .   s1  s2"
-      "s3  s4  s5  s6"
-      "s7  s8  s9  s10";
+      "s1  s2"
+      "s3  s4"
+      "s5  s6"
+      "s7  s8"
+      "s9  s10";
   }
 
   .right-sticker-grid {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     grid-template-areas:
-      "s11  s12  s13  s13"
-      "s14  s15  s16  s17"
-      ".    s18  s19  s20";
+      "s11  s12"
+      "s13  s13"
+      "s14  s15"
+      "s16  s17"
+      "s18  s19"
+      "s20  .";
   }
 
-  .album-sticker {
-    min-height: 100px;
+  .special-grid {
+    grid-template-columns: repeat(2, 1fr);
   }
-}
 
-.footer-note {
-  margin-top: 24px;
-  color: #64748b;
-  font-size: 12px;
-  text-align: center;
-}
-
-.footer-note a {
-  color: #0066cc;
-  text-decoration: none;
-}
-
-.footer-note a:hover {
-  text-decoration: underline;
+  .counter button {
+    width: 34px;
+    min-width: 34px;
+    max-width: 34px;
+    height: 34px;
+  }
 }
