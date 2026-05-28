@@ -105,9 +105,9 @@ const translations = {
     filterDuplicates: "Doppelte",
     searchPlaceholder: "Sticker suchen, z. B. MEX 13, Germany, FWC...",
     frontSpecialTitle: "Spezial-Sticker vorne",
-    frontSpecialSubtitle: "FWC 1–9",
+    frontSpecialSubtitle: "FWC 00–08",
     backSpecialTitle: "Spezial-Sticker hinten",
-    backSpecialSubtitle: "FWC 10–20",
+    backSpecialSubtitle: "FWC 09–19",
     group: "Gruppe",
     stickersOneToTwenty: "Sticker 1–20",
     leftPage: "Sticker 1–10",
@@ -149,9 +149,9 @@ const translations = {
     filterDuplicates: "Duplicates",
     searchPlaceholder: "Search stickers, e.g. MEX 13, Germany, FWC...",
     frontSpecialTitle: "Front special stickers",
-    frontSpecialSubtitle: "FWC 1–9",
+    frontSpecialSubtitle: "FWC 00–08",
     backSpecialTitle: "Back special stickers",
-    backSpecialSubtitle: "FWC 10–20",
+    backSpecialSubtitle: "FWC 09–19",
     group: "Group",
     stickersOneToTwenty: "Stickers 1–20",
     leftPage: "Stickers 1–10",
@@ -193,9 +193,9 @@ const translations = {
     filterDuplicates: "Repetidos",
     searchPlaceholder: "Buscar stickers, p. ej. MEX 13, Germany, FWC...",
     frontSpecialTitle: "Stickers especiales iniciales",
-    frontSpecialSubtitle: "FWC 1–9",
+    frontSpecialSubtitle: "FWC 00–08",
     backSpecialTitle: "Stickers especiales finales",
-    backSpecialSubtitle: "FWC 10–20",
+    backSpecialSubtitle: "FWC 09–19",
     group: "Grupo",
     stickersOneToTwenty: "Stickers 1–20",
     leftPage: "Stickers 1–10",
@@ -237,9 +237,9 @@ const translations = {
     filterDuplicates: "Doppi",
     searchPlaceholder: "Cerca sticker, ad es. MEX 13, Germany, FWC...",
     frontSpecialTitle: "Sticker speciali iniziali",
-    frontSpecialSubtitle: "FWC 1–9",
+    frontSpecialSubtitle: "FWC 00–08",
     backSpecialTitle: "Sticker speciali finali",
-    backSpecialSubtitle: "FWC 10–20",
+    backSpecialSubtitle: "FWC 09–19",
     group: "Gruppo",
     stickersOneToTwenty: "Sticker 1–20",
     leftPage: "Sticker 1–10",
@@ -281,9 +281,9 @@ const translations = {
     filterDuplicates: "Doubles",
     searchPlaceholder: "Rechercher des stickers, p. ex. MEX 13, Germany, FWC...",
     frontSpecialTitle: "Stickers spéciaux au début",
-    frontSpecialSubtitle: "FWC 1–9",
+    frontSpecialSubtitle: "FWC 00–08",
     backSpecialTitle: "Stickers spéciaux à la fin",
-    backSpecialSubtitle: "FWC 10–20",
+    backSpecialSubtitle: "FWC 09–19",
     group: "Groupe",
     stickersOneToTwenty: "Stickers 1–20",
     leftPage: "Stickers 1–10",
@@ -319,9 +319,9 @@ function t(key) {
 function createStickers() {
   stickers = [];
 
-  createSpecialStickers("front", 1, 9);
+  createSpecialStickers("front", 0, 8);
   createTeamStickers();
-  createSpecialStickers("back", 10, 20);
+  createSpecialStickers("back", 9, 19);
 }
 
 function createSpecialStickers(section, firstNumber, lastNumber) {
@@ -436,8 +436,9 @@ function stickerMatchesSearchTerm(sticker) {
     return true;
   }
 
-  const stickerCode = `${sticker.teamCode} ${sticker.number}`.toLowerCase();
-  const stickerCodeWithoutSpace = `${sticker.teamCode}${sticker.number}`.toLowerCase();
+  const stickerNumber = getStickerDisplayNumber(sticker);
+  const stickerCode = `${sticker.teamCode} ${stickerNumber}`.toLowerCase();
+  const stickerCodeWithoutSpace = `${sticker.teamCode}${stickerNumber}`.toLowerCase();
   const teamName = sticker.teamName.toLowerCase();
   const teamCode = sticker.teamCode.toLowerCase();
 
@@ -738,11 +739,21 @@ function createStickerName(sticker) {
 }
 
 function getStickerLabel(sticker) {
+  const stickerNumber = getStickerDisplayNumber(sticker);
+
   if (sticker.type === "team" && sticker.number === 13) {
-    return `${sticker.teamCode} ${sticker.number} | ${t("teamPhoto")}`;
+    return `${sticker.teamCode} ${stickerNumber} | ${t("teamPhoto")}`;
   }
 
-  return `${sticker.teamCode} ${sticker.number}`;
+  return `${sticker.teamCode} ${stickerNumber}`;
+}
+
+function getStickerDisplayNumber(sticker) {
+  if (sticker.type === "special") {
+    return String(sticker.number).padStart(2, "0");
+  }
+
+  return sticker.number;
 }
 
 function createDuplicateBadge(sticker) {
@@ -1079,7 +1090,7 @@ function groupStickersForPdf(stickerList) {
       groupedStickers[groupName] = [];
     }
 
-    groupedStickers[groupName].push(`${sticker.teamCode} ${sticker.number}`);
+    groupedStickers[groupName].push(`${sticker.teamCode} ${getStickerDisplayNumber(sticker)}`);
   });
 
   return groupedStickers;
@@ -1097,7 +1108,7 @@ function groupDuplicateStickersForPdf(stickerList) {
     }
 
     groupedStickers[groupName].push(
-      `${sticker.teamCode} ${sticker.number}: ${duplicateAmount}x ${t("pdfDuplicateText")}`
+    `${sticker.teamCode} ${getStickerDisplayNumber(sticker)}: ${duplicateAmount}x ${t("pdfDuplicateText")}`
     );
   });
 
