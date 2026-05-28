@@ -14,7 +14,7 @@ body {
 }
 
 .app {
-  width: min(1100px, 100%);
+  width: min(1220px, 100%);
   margin: 0 auto;
   padding: 24px;
 }
@@ -218,6 +218,76 @@ button:hover {
   background: #0f172a;
 }
 
+.support-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 18px;
+    color: white;
+    background: linear-gradient(135deg, #16a34a, #22c55e);
+    border-radius: 14px;
+    font-size: 15px;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    transition:
+      transform 0.15s ease,
+      background 0.15s ease,
+      box-shadow 0.15s ease;
+}
+
+.header-support-button {
+  position: absolute;
+  top: 68px;
+  right: 18px;
+  padding: 9px 14px;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.support-button:hover {
+  background: linear-gradient(135deg, #15803d, #16a34a);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(22, 163, 74, 0.22);
+}
+
+.support-note {
+  margin: -12px 0 24px 0;
+  color: #64748b;
+  font-size: 12px;
+  text-align: center;
+}
+
+.header-support-button::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 10;
+  width: 260px;
+  padding: 10px 12px;
+  color: #0f172a;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.18);
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.35;
+  text-align: left;
+  white-space: normal;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-4px);
+  transition:
+    opacity 0.15s ease,
+    transform 0.15s ease;
+}
+
+.header-support-button:hover::after {
+  opacity: 1;
+  transform: translateY(0);
+}
+
 .search-input {
   width: 100%;
   padding: 12px 14px;
@@ -252,9 +322,13 @@ button:hover {
 .sticker-container {
   display: grid;
   gap: 20px;
+  width: min(1180px, calc(100vw - 48px));
+  margin-left: 50%;
+  transform: translateX(calc(-50% - 65px));
 }
 
 .team-card {
+  width: 100%;
   padding: 20px;
   background: white;
   border-radius: 22px;
@@ -528,6 +602,21 @@ button:hover {
   box-shadow: 0 8px 20px rgba(15, 23, 42, 0.18);
 }
 
+.coca-cola-card .special-header {
+  background: linear-gradient(135deg, #e41e2b 0%, #e41e2b 65%, #ffffff 100%);
+  color: white;
+}
+
+.coca-cola-card .special-badge {
+  color: #e41e2b;
+  background: white;
+}
+
+.coca-cola-card .team-info h3,
+.coca-cola-card .team-info p {
+  color: white;
+}
+
 .special-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(135px, 1fr));
@@ -565,13 +654,20 @@ button:hover {
   }
 
   .header {
-    padding: 72px 24px 24px 24px;
+    padding: 118px 24px 24px 24px;
   }
 
   .language-switcher {
     top: 18px;
     left: 18px;
     right: auto;
+  }
+
+  .header-support-button {
+    top: 68px;
+    left: 18px;
+    right: auto;
+    width: auto;
   }
 
   .summary {
@@ -583,6 +679,10 @@ button:hover {
   }
 
   button {
+    width: 100%;
+  }
+
+  .support-button {
     width: 100%;
   }
 
@@ -615,24 +715,19 @@ button:hover {
   }
 
   .left-sticker-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     grid-template-areas:
-      "s1  s2"
-      "s3  s4"
-      "s5  s6"
-      "s7  s8"
-      "s9  s10";
+      ".   .   s1  s2"
+      "s3  s4  s5  s6"
+      "s7  s8  s9  s10";
   }
 
   .right-sticker-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     grid-template-areas:
-      "s11  s12"
-      "s13  s13"
-      "s14  s15"
-      "s16  s17"
-      "s18  s19"
-      "s20  .";
+      "s11  s12  s13  s13"
+      "s14  s15  s16  s17"
+      ".    s18  s19  s20";
   }
 
   .album-sticker {

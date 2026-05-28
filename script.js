@@ -128,6 +128,11 @@ const translations = {
     duplicatesPdfFileName: "doppelte_sticker_panini_wm_2026.pdf",
     alertNoMissing: "Du hast keine fehlenden Sticker. Deine Sammlung ist vollständig.",
     alertNoDuplicates: "Du hast aktuell keine doppelten Sticker.",
+    support: "Projekt unterstützen",
+    supportTooltip: "Freiwillige Unterstützung für die Weiterentwicklung dieser privaten Fan-Checkliste. Keine steuerlich absetzbare Spende.",
+    cocaColaTitle: "Coca-Cola Sticker",
+    cocaColaSubtitle: "CC 1–12",
+    pdfCocaColaGroup: "CC - Coca-Cola Sticker",
   },
 
   en: {
@@ -172,6 +177,11 @@ const translations = {
     duplicatesPdfFileName: "duplicate_stickers_panini_world_cup_2026.pdf",
     alertNoMissing: "You have no missing stickers. Your collection is complete.",
     alertNoDuplicates: "You currently have no duplicate stickers.",
+    support: "Support the project",
+    supportTooltip: "Voluntary support for the further development of this private fan-made checklist. Not a tax-deductible donation.",
+    cocaColaTitle: "Coca-Cola stickers",
+    cocaColaSubtitle: "CC 1–12",
+    pdfCocaColaGroup: "CC - Coca-Cola stickers",
   },
 
   es: {
@@ -216,6 +226,11 @@ const translations = {
     duplicatesPdfFileName: "stickers_repetidos_panini_mundial_2026.pdf",
     alertNoMissing: "No tienes stickers faltantes. Tu colección está completa.",
     alertNoDuplicates: "Actualmente no tienes stickers repetidos.",
+    support: "Apoyar el proyecto",
+    supportTooltip: "Apoyo voluntario para seguir desarrollando esta checklist privada hecha por fans. No es una donación deducible de impuestos.",
+    cocaColaTitle: "Stickers Coca-Cola",
+    cocaColaSubtitle: "CC 1–12",
+    pdfCocaColaGroup: "CC - Stickers Coca-Cola",
   },
 
   it: {
@@ -260,6 +275,11 @@ const translations = {
     duplicatesPdfFileName: "stickers_repetidos_panini_mundial_2026.pdf",
     alertNoMissing: "No tienes stickers faltantes. Tu colección está completa.",
     alertNoDuplicates: "Actualmente no tienes stickers repetidos.",
+    support: "Sostieni il progetto",
+    supportTooltip: "Supporto volontario per lo sviluppo di questa checklist privata creata dai fan. Non è una donazione fiscalmente detraibile.",
+    cocaColaTitle: "Sticker Coca-Cola",
+    cocaColaSubtitle: "CC 1–12",
+    pdfCocaColaGroup: "CC - Sticker Coca-Cola",
   },
 
   fr: {
@@ -304,6 +324,11 @@ const translations = {
     duplicatesPdfFileName: "stickers_doubles_panini_coupe_du_monde_2026.pdf",
     alertNoMissing: "Tu n'as aucun sticker manquant. Ta collection est complète.",
     alertNoDuplicates: "Tu n'as actuellement aucun sticker double.",
+    support: "Soutenir le projet",
+    supportTooltip: "Soutien volontaire pour le développement de cette checklist privée créée par un fan. Ce n’est pas un don déductible des impôts.",
+    cocaColaTitle: "Stickers Coca-Cola",
+    cocaColaSubtitle: "CC 1–12",
+    pdfCocaColaGroup: "CC - Stickers Coca-Cola",
   }
 };
 
@@ -322,6 +347,7 @@ function createStickers() {
   createSpecialStickers("front", 0, 8);
   createTeamStickers();
   createSpecialStickers("back", 9, 19);
+  createCocaColaStickers();
 }
 
 function createSpecialStickers(section, firstNumber, lastNumber) {
@@ -333,7 +359,23 @@ function createSpecialStickers(section, firstNumber, lastNumber) {
       teamCode: "FWC",
       teamName: "FIFA World Cup 2026",
       number: number,
-      ownedCount: 0
+      ownedCount: 0,
+      countsForCollection: true
+    });
+  }
+}
+
+function createCocaColaStickers() {
+  for (let number = 1; number <= 12; number++) {
+    stickers.push({
+      type: "bonus",
+      section: "cocaCola",
+      group: "CC",
+      teamCode: "CC",
+      teamName: "Coca-Cola",
+      number: number,
+      ownedCount: 0,
+      countsForCollection: false
     });
   }
 }
@@ -348,7 +390,8 @@ function createTeamStickers() {
         teamCode: team.code,
         teamName: team.name,
         number: number,
-        ownedCount: 0
+        ownedCount: 0,
+        countsForCollection: true
       });
     }
   });
@@ -386,7 +429,8 @@ function updateStaticTexts() {
   document.getElementById("exportBackupButton").textContent = t("exportBackup");
   document.getElementById("importBackupButton").textContent = t("importBackup");
   document.getElementById("resetButton").textContent = t("reset");
-
+  document.getElementById("supportButton").textContent = t("support");
+  document.getElementById("supportButton").setAttribute("data-tooltip", t("supportTooltip"));
   document.querySelector('[data-filter="all"]').textContent = t("filterAll");
   document.querySelector('[data-filter="missing"]').textContent = t("filterMissing");
   document.querySelector('[data-filter="owned"]').textContent = t("filterOwned");
@@ -462,6 +506,7 @@ function renderStickers() {
   renderSpecialSection(container, "front", t("frontSpecialTitle"), t("frontSpecialSubtitle"));
   renderTeamGroups(container);
   renderSpecialSection(container, "back", t("backSpecialTitle"), t("backSpecialSubtitle"));
+  renderSpecialSection(container, "cocaCola", t("cocaColaTitle"), t("cocaColaSubtitle"));
   renderEmptyFilterMessage(container);
 }
 
@@ -614,11 +659,7 @@ function addOrderedStickersToGrid(stickerGrid, stickerList, stickerOrder) {
 
 function renderSpecialSection(container, sectionName, title, subtitle) {
   const specialStickers = stickers.filter(sticker => {
-    return (
-      sticker.type === "special" &&
-      sticker.section === sectionName &&
-      stickerMatchesFilter(sticker)
-    );
+    return sticker.section === sectionName && stickerMatchesFilter(sticker);
   });
 
   if (specialStickers.length === 0) {
@@ -628,7 +669,11 @@ function renderSpecialSection(container, sectionName, title, subtitle) {
   const specialSection = document.createElement("section");
   specialSection.className = "team-card special-card";
 
-  const specialHeader = createSpecialHeader(title, subtitle);
+  if (sectionName === "cocaCola") {
+    specialSection.classList.add("coca-cola-card");
+  }
+
+const specialHeader = createSpecialHeader(title, subtitle, sectionName);
   const specialGrid = document.createElement("div");
   specialGrid.className = "special-grid";
 
@@ -642,13 +687,13 @@ function renderSpecialSection(container, sectionName, title, subtitle) {
   container.appendChild(specialSection);
 }
 
-function createSpecialHeader(title, subtitle) {
+function createSpecialHeader(title, subtitle, sectionName) {
   const specialHeader = document.createElement("div");
   specialHeader.className = "special-header";
 
   const specialBadge = document.createElement("div");
   specialBadge.className = "special-badge";
-  specialBadge.textContent = "FWC";
+  specialBadge.textContent = sectionName === "cocaCola" ? "CC" : "FWC";
 
   const specialInfo = document.createElement("div");
   specialInfo.className = "team-info";
@@ -749,7 +794,7 @@ function getStickerLabel(sticker) {
 }
 
 function getStickerDisplayNumber(sticker) {
-  if (sticker.type === "special") {
+  if (sticker.teamCode === "FWC") {
     return String(sticker.number).padStart(2, "0");
   }
 
@@ -797,15 +842,22 @@ function createStickerCounter(sticker) {
   return counter;
 }
 
+function getCollectionStickers() {
+  return stickers.filter(sticker => {
+    return sticker.countsForCollection !== false;
+  });
+}
 
 /* =========================
    Zusammenfassung aktualisieren
    ========================= */
 
 function updateSummary() {
-  const total = stickers.length;
-  const collected = stickers.filter(sticker => sticker.ownedCount > 0).length;
-  const missing = stickers.filter(sticker => sticker.ownedCount === 0).length;
+  const collectionStickers = getCollectionStickers();
+
+  const total = collectionStickers.length;
+  const collected = collectionStickers.filter(sticker => sticker.ownedCount > 0).length;
+  const missing = collectionStickers.filter(sticker => sticker.ownedCount === 0).length;
   const duplicateAmount = getTotalDuplicateAmount();
   const percent = total === 0 ? 0 : Math.round((collected / total) * 100);
 
@@ -958,7 +1010,7 @@ function applyBackupData(backupData) {
    ========================= */
 
 function createMissingPdf() {
-  const missingStickers = stickers.filter(sticker => {
+  const missingStickers = getCollectionStickers().filter(sticker => {
     return sticker.ownedCount === 0;
   });
 
@@ -973,7 +1025,7 @@ function createMissingPdf() {
   doc.setFont("helvetica", "normal");
   doc.setFontSize(11);
   doc.text(
-    `${t("pdfMissingSummary")}: ${missingStickers.length} ${t("pdfStickerPlural")} / ${stickers.length}`,
+    `${t("pdfMissingSummary")}: ${missingStickers.length} ${t("pdfStickerPlural")} / ${getCollectionStickers().length}`,
     14,
     y
   );
@@ -987,7 +1039,7 @@ function createMissingPdf() {
 }
 
 function createDuplicatesPdf() {
-  const duplicateStickers = stickers.filter(sticker => {
+  const duplicateStickers = getCollectionStickers().filter(sticker => {
     return sticker.ownedCount > 1;
   });
 
@@ -1116,8 +1168,12 @@ function groupDuplicateStickersForPdf(stickerList) {
 }
 
 function getPdfGroupName(sticker) {
-  if (sticker.type === "special") {
+  if (sticker.teamCode === "FWC") {
     return t("pdfSpecialGroup");
+  }
+
+  if (sticker.teamCode === "CC") {
+    return t("pdfCocaColaGroup");
   }
 
   return `${sticker.teamCode} - ${sticker.teamName}`;

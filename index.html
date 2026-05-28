@@ -36,6 +36,17 @@
         </button>
       </div>
 
+      <a
+        id="supportButton"
+        class="support-button header-support-button"
+        href="https://paypal.me/pkometter"
+        target="_blank"
+        rel="noopener"
+        data-tooltip="Freiwillige Unterstützung für die Weiterentwicklung dieser privaten Fan-Checkliste. Keine steuerlich absetzbare Spende."
+      >
+        Projekt unterstützen
+      </a>
+
       <h1 id="appTitle">Panini WM 2026 Checkliste</h1>
       <p id="appSubtitle">
         Verwalte deine Sticker, fehlenden Sticker und doppelten Sticker.
@@ -80,7 +91,6 @@
       <button id="exportBackupButton">Backup exportieren</button>
       <button id="importBackupButton">Backup importieren</button>
       <button id="resetButton">Zurücksetzen</button>
-
       <input id="importBackupInput" type="file" accept=".json" hidden>
     </section>
 
@@ -104,6 +114,10 @@
     <!-- Hier werden die Sticker per JavaScript eingefügt -->
     <main id="stickerContainer" class="sticker-container"></main>
 
+    <p class="footer-note">
+      Flag icons provided by <a href="https://flagpedia.net" target="_blank" rel="noopener">Flagpedia</a>.
+    </p>
+
   </div>
 
   <!-- Externe Bibliothek für PDF-Erstellung -->
@@ -112,7 +126,4 @@
   <!-- Eigene App-Logik -->
   <script src="script.js"></script>
 </body>
-<p class="footer-note">
-  Flag icons provided by <a href="https://flagpedia.net" target="_blank" rel="noopener">Flagpedia</a>.
-</p>
 </html>
